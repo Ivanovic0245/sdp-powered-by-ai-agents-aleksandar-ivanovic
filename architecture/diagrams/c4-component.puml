@@ -1,0 +1,26 @@
+@startuml c4-component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram — Users Service
+
+Container(spa, "React SPA", "React / TypeScript", "Single-page application")
+ContainerDb(users_db, "Users DB", "PostgreSQL", "users schema")
+System_Ext(emailProvider, "Email Provider", "Sends emails")
+
+Container_Boundary(users_service, "Users Service") {
+    Component(auth, "Auth Component", "FastAPI router", "Handles registration, login, JWT issuance (RS256)")
+    Component(profiles, "Profiles Component", "FastAPI router", "CRUD for user profiles and avatars")
+    Component(follows, "Follows Component", "FastAPI router", "Follow/unfollow, follower and followee lists")
+    Component(jwt_validator, "JWT Validator", "Shared middleware", "Validates RS256 JWT tokens on every request")
+}
+
+Rel(spa, auth, "POST /auth/register, POST /auth/login", "REST/JSON")
+Rel(spa, profiles, "GET/PUT /users/{id}", "REST/JSON")
+Rel(spa, follows, "POST/DELETE /users/{id}/follow", "REST/JSON")
+Rel(auth, users_db, "Reads/Writes users", "asyncpg")
+Rel(profiles, users_db, "Reads/Writes profiles", "asyncpg")
+Rel(follows, users_db, "Reads/Writes follow relationships", "asyncpg")
+Rel(auth, emailProvider, "Sends verification emails", "HTTPS API")
+Rel(jwt_validator, auth, "Validates token on protected routes", "internal")
+
+@enduml
