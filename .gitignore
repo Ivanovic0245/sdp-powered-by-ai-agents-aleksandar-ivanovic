@@ -16,5 +16,8 @@ build/
 # Secrets baseline
 .secrets.baseline
 
+# PlantUML
+scripts/plantuml.jar
+
 # OS
 .DS_Store
