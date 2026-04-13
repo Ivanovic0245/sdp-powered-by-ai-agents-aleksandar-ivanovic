@@ -1,19 +1,15 @@
 @startuml c4-context
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-LAYOUT_WITH_LEGEND()
-
 title System Context — Social Network
 
-Person(user, "User", "A registered user who posts messages, follows others, and sends direct messages.")
+Person(user, "User", "Registers, posts, follows others, sends messages.")
 
-System(social_network, "Social Network", "Allows users to post messages, follow other users, view aggregated timelines, and exchange direct messages.")
+System(socialNetwork, "Social Network", "Allows users to post content, follow each other, and exchange direct messages.")
 
-System_Ext(email_service, "Email Service", "Sends notification emails for mentions and direct messages (e.g. SendGrid).")
-System_Ext(cdn, "CDN", "Serves static assets and media uploads (e.g. AWS CloudFront).")
+System_Ext(emailProvider, "Email Provider", "Sends notification and verification emails.")
 
-Rel(user, social_network, "Posts messages, follows users, reads timeline, sends DMs", "HTTPS")
-Rel(social_network, email_service, "Sends mention and message notifications", "HTTPS/REST")
-Rel(social_network, cdn, "Uploads and retrieves media content", "HTTPS")
+Rel(user, socialNetwork, "Uses", "HTTPS")
+Rel(socialNetwork, emailProvider, "Sends emails via", "SMTP/API")
 
 @enduml
