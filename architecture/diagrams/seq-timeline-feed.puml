@@ -1,0 +1,15 @@
+@startuml seq-timeline-feed
+participant Browser
+participant "Posts Service" as PS
+participant "Users Service" as US
+participant "Posts DB" as DB
+
+Browser -> PS: GET /feed [Bearer JWT]
+PS -> US: GET /users/{user_id}/followees
+US --> PS: 200 OK {followee_ids[]}
+PS -> DB: SELECT posts WHERE author_id IN (followees)\nORDER BY created_at DESC LIMIT 20
+DB --> PS: posts[]
+PS -> US: GET /users/{id} (batch enrich authors)
+US --> PS: 200 OK {profiles[]}
+PS --> Browser: 200 OK {posts[]}
+@enduml

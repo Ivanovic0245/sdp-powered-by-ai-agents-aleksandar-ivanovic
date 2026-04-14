@@ -1,0 +1,12 @@
+@startuml seq-post-creation
+participant Browser
+participant "Posts Service" as PS
+participant "Users Service" as US
+participant "Posts DB" as DB
+
+Browser -> PS: POST /posts {content} [Bearer JWT]
+PS -> US: GET /users/{author_id}
+US --> PS: 200 OK {profile}
+PS -> DB: INSERT post
+PS --> Browser: 201 Created {post}
+@enduml
