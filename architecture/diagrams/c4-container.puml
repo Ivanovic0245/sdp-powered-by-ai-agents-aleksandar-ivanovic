@@ -1,0 +1,31 @@
+@startuml c4-container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container Diagram — Social Network
+
+Person(user, "User", "Browser-based user")
+
+System_Boundary(sn, "Social Network") {
+    Container(spa, "React SPA", "React / TypeScript", "Single-page application served to the browser")
+    Container(users_api, "Users Service", "Python 3.12 / FastAPI", "Profiles, authentication, follow relationships")
+    Container(posts_api, "Posts Service", "Python 3.12 / FastAPI", "Posts, likes, aggregated timeline feed")
+    Container(messaging_api, "Messaging Service", "Python 3.12 / FastAPI", "Direct messages and mentions")
+    ContainerDb(users_db, "Users DB", "PostgreSQL", "users schema")
+    ContainerDb(posts_db, "Posts DB", "PostgreSQL", "posts schema")
+    ContainerDb(messaging_db, "Messaging DB", "PostgreSQL", "messaging schema")
+}
+
+System_Ext(emailProvider, "Email Provider", "Sends emails")
+
+Rel(user, spa, "Uses", "HTTPS")
+Rel(spa, users_api, "Auth, profiles, follows", "REST/JSON")
+Rel(spa, posts_api, "Posts, feed", "REST/JSON")
+Rel(spa, messaging_api, "Messages, mentions", "REST/JSON")
+Rel(users_api, users_db, "Reads/Writes", "asyncpg")
+Rel(posts_api, posts_db, "Reads/Writes", "asyncpg")
+Rel(messaging_api, messaging_db, "Reads/Writes", "asyncpg")
+Rel(posts_api, users_api, "Resolve author profiles", "REST/JSON")
+Rel(messaging_api, users_api, "Resolve recipient profiles", "REST/JSON")
+Rel(users_api, emailProvider, "Send verification/notification emails", "HTTPS API")
+
+@enduml

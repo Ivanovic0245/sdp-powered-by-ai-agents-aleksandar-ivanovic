@@ -29,6 +29,14 @@ repos:
 
   - repo: local
     hooks:
+      - id: generate-plantuml
+        name: Generate PlantUML SVGs
+        language: script
+        entry: scripts/generate-plantuml.sh
+        types: [file]
+        files: \.puml$
+        pass_filenames: false
+
       - id: check-commit-msg
         name: Check commit message format
         language: script

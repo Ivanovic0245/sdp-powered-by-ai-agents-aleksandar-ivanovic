@@ -1,0 +1,15 @@
+@startuml c4-context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title System Context — Social Network
+
+Person(user, "User", "Registers, posts, follows others, sends messages.")
+
+System(socialNetwork, "Social Network", "Allows users to post content, follow each other, and exchange direct messages.")
+
+System_Ext(emailProvider, "Email Provider", "Sends notification and verification emails.")
+
+Rel(user, socialNetwork, "Uses", "HTTPS")
+Rel(socialNetwork, emailProvider, "Sends emails via", "SMTP/API")
+
+@enduml

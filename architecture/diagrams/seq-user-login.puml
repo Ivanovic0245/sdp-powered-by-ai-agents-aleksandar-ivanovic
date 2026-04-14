@@ -1,0 +1,15 @@
+@startuml seq-user-login
+participant Browser
+participant "Users Service" as US
+participant "Users DB" as DB
+participant "Email Provider" as Email
+
+Browser -> US: POST /auth/register {email, password}
+US -> DB: INSERT user
+US -> Email: send verification email
+US --> Browser: 201 Created
+
+Browser -> US: POST /auth/login {email, password}
+US -> DB: SELECT user, verify password hash
+US --> Browser: 200 OK {access_token (JWT), refresh_token}
+@enduml
