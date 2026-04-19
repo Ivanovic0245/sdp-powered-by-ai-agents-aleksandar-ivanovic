@@ -42,3 +42,9 @@ repos:
         language: script
         entry: scripts/hooks/check-commit-msg.sh
         stages: [commit-msg]
+
+      - id: docker-test
+        name: Run tests inside Docker
+        language: script
+        entry: scripts/hooks/docker-test.sh
+        pass_filenames: false
