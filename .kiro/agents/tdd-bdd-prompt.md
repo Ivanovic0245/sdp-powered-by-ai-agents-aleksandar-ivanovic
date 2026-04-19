@@ -18,7 +18,7 @@ For EVERY scenario, follow this exact sequence:
 Test function names must follow this pattern:
 
 ```
-test_{domain}_{story_type}_{story_number}_{sub}_{scenario_id}_{behavior_description}
+test_{domain}_{story_type}_{story_number}_{scenario_id}_{behavior_description}
 ```
 
 Examples:

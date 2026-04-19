@@ -37,7 +37,7 @@ def test_post_be_001_s2_given_empty_text_when_create_then_text_required_error(se
         service.create_post(author_id="user-123", text="")
 
 
-def test_post_be_001_s2_given_whitespace_text_when_create_then_text_required_error(
+def test_post_be_001_s3_given_whitespace_text_when_create_then_text_required_error(
     service,
 ):
     # GIVEN: user submits a post with whitespace-only text
@@ -47,7 +47,7 @@ def test_post_be_001_s2_given_whitespace_text_when_create_then_text_required_err
         service.create_post(author_id="user-123", text="   ")
 
 
-def test_post_be_001_s3_given_text_over_280_chars_when_create_then_too_long_error(
+def test_post_be_001_s4_given_text_over_280_chars_when_create_then_too_long_error(
     service,
 ):
     # GIVEN: post text exceeds 280 characters
@@ -57,7 +57,7 @@ def test_post_be_001_s3_given_text_over_280_chars_when_create_then_too_long_erro
         service.create_post(author_id="user-123", text="x" * 281)
 
 
-def test_post_be_001_s4_given_no_jwt_when_create_then_unauthorized_error(service):
+def test_post_be_001_s5_given_no_jwt_when_create_then_unauthorized_error(service):
     # GIVEN: request carries no JWT (author_id is None)
     # WHEN: POST /posts is called
     # THEN: UnauthorizedError is raised (maps to 401 Unauthorized)

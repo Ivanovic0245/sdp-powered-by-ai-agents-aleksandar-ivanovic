@@ -70,8 +70,15 @@ def test_post_be_002_s3_given_25_posts_when_page_2_then_correct_slice(
         )
     # WHEN: user requests page 2 with page_size=20
     page = service.get_timeline(user_id="user-1", page=2, page_size=20)
-    # THEN: response contains the remaining 5 posts with correct metadata
+    # THEN: response contains posts 21-25 in correct order with pagination metadata
     assert len(page.items) == 5
+    assert [item.text for item in page.items] == [
+        "post 20",
+        "post 21",
+        "post 22",
+        "post 23",
+        "post 24",
+    ]
     assert page.page == 2
     assert page.page_size == 20
     assert page.has_next is False

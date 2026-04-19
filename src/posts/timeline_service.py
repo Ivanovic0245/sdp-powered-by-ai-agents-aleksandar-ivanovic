@@ -25,6 +25,10 @@ class TimelineService:
     def get_timeline(
         self, user_id: str, page: int = 1, page_size: int = 20
     ) -> TimelinePage:
+        if page < 1:
+            raise ValueError("page must be >= 1")
+        if page_size < 1:
+            raise ValueError("page_size must be >= 1")
         followee_ids = self._follows.get_followees(user_id)
         all_posts = self._posts.find_by_authors(followee_ids)
         all_posts.sort(key=lambda p: p.created_at, reverse=True)

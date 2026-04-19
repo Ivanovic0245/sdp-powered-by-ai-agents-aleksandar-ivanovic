@@ -3,12 +3,14 @@
   "description": "TDD/BDD agent — implements kata features using strict RED-GREEN-REFACTOR discipline, one test at a time",
   "prompt": "file://./tdd-bdd-prompt.md",
   "tools": [
-    "read",
-    "write",
+    "fs_read",
+    "fs_write",
     "shell"
   ],
   "allowedTools": [
-    "read"
+    "fs_read",
+    "fs_write",
+    "shell"
   ],
   "resources": [
     "file://docs/user-stories/**/*.md"

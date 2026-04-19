@@ -50,7 +50,7 @@ def test_user_be_001_s3_given_invalid_email_format_when_register_then_invalid_in
     assert exc_info.value.field == "email"
 
 
-def test_user_be_001_s3_given_short_password_when_register_then_invalid_input(
+def test_user_be_001_s4_given_short_password_when_register_then_invalid_input(
     service,
 ):
     # GIVEN: visitor submits a registration form with a password that is too short
@@ -59,3 +59,14 @@ def test_user_be_001_s3_given_short_password_when_register_then_invalid_input(
     with pytest.raises(InvalidInputError) as exc_info:
         service.register("alice@example.com", "alice", "short")
     assert exc_info.value.field == "password"
+
+
+def test_user_be_001_s5_given_blank_username_when_register_then_invalid_input(
+    service,
+):
+    # GIVEN: visitor submits a registration form with a blank username
+    # WHEN: the request reaches the Users Service
+    # THEN: InvalidInputError raised with field=username (maps to 422)
+    with pytest.raises(InvalidInputError) as exc_info:
+        service.register("alice@example.com", "   ", VALID_PASSWORD)
+    assert exc_info.value.field == "username"

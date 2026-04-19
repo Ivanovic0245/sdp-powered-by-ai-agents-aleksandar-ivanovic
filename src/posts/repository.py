@@ -10,4 +10,5 @@ class InMemoryPostRepository:
         return post
 
     def find_by_authors(self, author_ids: list[str]) -> list[Post]:
-        return [p for p in self._store if p.author_id in author_ids]
+        author_id_set = set(author_ids)
+        return [p for p in self._store if p.author_id in author_id_set]
