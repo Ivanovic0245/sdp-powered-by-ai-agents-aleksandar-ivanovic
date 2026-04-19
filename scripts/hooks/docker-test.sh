@@ -16,10 +16,14 @@ fi
 
 echo "🐳 Building Docker image and running tests..."
 
-if ! docker build -t kata-tests-precommit . -q > /dev/null 2>&1; then
+BUILD_LOG=$(mktemp)
+if ! docker build -t kata-tests-precommit . -q > "$BUILD_LOG" 2>&1; then
     echo "❌ Docker build failed. Fix the build before committing."
+    cat "$BUILD_LOG"
+    rm -f "$BUILD_LOG"
     exit 1
 fi
+rm -f "$BUILD_LOG"
 
 if ! docker run --rm kata-tests-precommit; then
     echo "❌ Tests failed inside Docker. Fix tests before committing."
