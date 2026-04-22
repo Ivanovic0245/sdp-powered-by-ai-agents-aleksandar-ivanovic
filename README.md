@@ -73,10 +73,12 @@ pytest tests/ -v
 ├── requirements.txt            # Runtime + test dependencies
 ├── src/
 │   ├── users/                  # Users bounded context
-│   └── posts/                  # Posts / Timeline bounded context
+│   ├── posts/                  # Posts / Timeline bounded context
+│   └── messaging/              # Messaging bounded context
 ├── tests/
-│   ├── users/                  # User registration and login scenarios
-│   └── posts/                  # Post creation and timeline scenarios
+│   ├── users/                  # User registration, login, profile scenarios
+│   ├── posts/                  # Post creation and timeline scenarios
+│   └── messaging/              # Send message, read conversation, @mention scenarios
 ├── docs/
 │   ├── architecture/           # arc42 chapters 1–12
 │   ├── user-stories/           # Story bundles per bounded context
