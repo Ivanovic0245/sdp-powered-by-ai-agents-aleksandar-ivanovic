@@ -1,7 +1,5 @@
 # Messaging Domain — Story Bundles
 
----
-
 ## MSG-STORY-001 — Send a direct message ✅ [Supporting]
 
 AS A logged-in user
@@ -79,7 +77,7 @@ SO THAT I can have private conversations on the platform
 **THEN**
 * The API returns `401 Unauthorized`
 
-**Architecture reference**: [Chapter 1 — Introduction and Goals](../../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 1 — Introduction and Goals](../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -119,7 +117,7 @@ SO THAT I can read and send messages in a single screen
 * A `POST /conversations` request is sent with `{recipient_id}`
 * The user is navigated to the new or existing conversation view
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -142,7 +140,7 @@ SO THAT I cannot accidentally send blank messages
 **THEN**
 * The "Send" button is disabled and cannot be clicked
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -184,7 +182,7 @@ SO THAT a conversation can be created or retrieved between two users
 * No new conversation is created
 * Response is `200 OK` with the existing `{conversation_id, participants}`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -223,7 +221,7 @@ SO THAT authenticated users can send messages within a conversation
 **THEN**
 * Response is `403 Forbidden` with error code `NOT_A_PARTICIPANT`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -248,7 +246,7 @@ SO THAT it can be deployed independently behind the nginx reverse proxy
 * The service is reachable on its configured port
 * `GET /health` returns `200 OK`
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -273,7 +271,7 @@ SO THAT the Messaging Service can persist conversations and messages
 * `messaging.messages` has an index on `(conversation_id, created_at DESC)`
 * Migration is idempotent
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../../architecture/09-architecture-decisions.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../architecture/09-architecture-decisions.md)
 
 ---
 
@@ -315,7 +313,7 @@ SO THAT I am notified when messaging is degraded
 **THEN**
 * An alert fires and is routed to the on-call channel
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -366,7 +364,7 @@ SO THAT I can follow the thread of a private exchange
 **THEN**
 * A list of conversations is returned, each with the other participant's profile and the latest message preview
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -402,7 +400,7 @@ SO THAT I can navigate between conversations and read messages
 **THEN**
 * `GET /conversations/{id}/messages` is called and messages are rendered oldest-first, scrolled to the bottom
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -438,7 +436,7 @@ SO THAT participants can list their conversations and read message history
 **THEN**
 * Response is `200 OK` with `{items: [...], page, page_size, has_next}` sorted `created_at ASC`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -446,7 +444,7 @@ SO THAT participants can list their conversations and read message history
 
 *Covered by MSG-INFRA-001.1.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -454,7 +452,7 @@ SO THAT participants can list their conversations and read message history
 
 *Covered by MSG-INFRA-001.2 — the `messaging.messages` table and its index on `(conversation_id, created_at)` already support read queries.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -468,7 +466,7 @@ SO THAT participants can list their conversations and read message history
 
 *Covered by MSG-INFRA-001.4.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -520,7 +518,7 @@ SO THAT they are notified and can see the context of the mention
 **THEN**
 * A mention record is created for each resolved user
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -546,7 +544,7 @@ SO THAT I can mention users without knowing their exact handle
 
 **Cross-domain dependency**: This scenario depends on the Users-domain handle resolution endpoint `GET /users?username={handle}` as documented in the runtime view; any future Users story inventory entry should align with that contract rather than redefining it here.
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md); [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md); [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -586,7 +584,7 @@ SO THAT mentions are recorded for notification purposes
 * Mention resolution failure is logged with `trace_id`
 * The sender receives `201 Created` (mention is best-effort)
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -594,7 +592,7 @@ SO THAT mentions are recorded for notification purposes
 
 *Covered by MSG-INFRA-001.1.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -618,7 +616,7 @@ SO THAT mention records can be persisted
 * Table `messaging.mentions` exists with columns `(id, message_id, target_user_id, created_at)`
 * A foreign key from `message_id` to `messaging.messages(id)` with `ON DELETE CASCADE` exists
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -642,7 +640,7 @@ SO THAT a Users Service outage does not degrade message sending
 * The error is caught, logged with `trace_id`, and the message send completes with `201 Created`
 * No mention row is inserted for the unresolved handle
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -650,4 +648,4 @@ SO THAT a Users Service outage does not degrade message sending
 
 *Covered by MSG-INFRA-001.4.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)

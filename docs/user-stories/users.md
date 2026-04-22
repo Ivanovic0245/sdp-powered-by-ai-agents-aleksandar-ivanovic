@@ -1,7 +1,5 @@
 # Users Domain — Story Bundles
 
----
-
 ## USER-STORY-001 — Register an account ✅ [CORE]
 
 AS A visitor
@@ -52,7 +50,7 @@ SO THAT I can access the social network as an authenticated user
 * The API returns `422 Unprocessable Entity` with field-level validation detail
 * No new record is created
 
-**Architecture reference**: [Chapter 1 — Introduction and Goals](../../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 1 — Introduction and Goals](../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -76,7 +74,7 @@ SO THAT I can submit my details to create an account
 * Fields for email, username, and password are visible and focusable
 * A submit button is present and labelled "Create account"
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -115,7 +113,7 @@ SO THAT I can correct errors before submitting
 * A banner error "This email is already registered" is displayed
 * The form remains editable
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -153,7 +151,7 @@ SO THAT visitors can create accounts
 * Response is `409 Conflict` with `{"error": {"code": "EMAIL_ALREADY_EXISTS", "message": "..."}}`
 * No row is inserted
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -177,7 +175,7 @@ SO THAT only valid email addresses are activated
 * A call is made to the Email Provider API with the verification link
 * The `users` row has `email_verified = false` until the link is clicked
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -202,7 +200,7 @@ SO THAT it can be deployed independently behind the nginx reverse proxy
 * The service is reachable on its configured port
 * `GET /health` returns `200 OK`
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -226,7 +224,7 @@ SO THAT the Users Service has the persistent storage it needs
 * Tables `users` and `email_verifications` exist in the `users` schema
 * The migration is idempotent (running it twice does not error)
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -250,7 +248,7 @@ SO THAT transient Email Provider failures do not fail the registration response
 * The Email Provider API is called with the correct verification URL
 * A failure to reach the Email Provider is logged but does not roll back the user record
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -286,7 +284,7 @@ SO THAT I am notified when registration or login is degraded
 **THEN**
 * An alert fires and is routed to the on-call channel
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -338,7 +336,7 @@ SO THAT I receive a JWT that grants me access to protected features
 * The API returns `401 Unauthorized` with error code `INVALID_CREDENTIALS`
 * The response is indistinguishable from the wrong-password case (no user enumeration)
 
-**Architecture reference**: [Chapter 1 — Introduction and Goals](../../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 1 — Introduction and Goals](../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -363,7 +361,7 @@ SO THAT I can authenticate and be redirected to my timeline
 * The `refresh_token` is stored as an `HttpOnly` cookie
 * The user is redirected to `/timeline`
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -389,7 +387,7 @@ SO THAT I know to correct them without exposing security details
 * The password field is cleared
 * No token is stored
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -429,7 +427,7 @@ SO THAT registered users can obtain a JWT
 * Response is `401 Unauthorized` with `{"error": {"code": "INVALID_CREDENTIALS", "message": "..."}}`
 * No token is issued; no timing difference leaks user existence
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -466,7 +464,7 @@ SO THAT clients can obtain a new access token without re-entering credentials
 **THEN**
 * Response is `401 Unauthorized` with error code `INVALID_REFRESH_TOKEN`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -474,7 +472,7 @@ SO THAT clients can obtain a new access token without re-entering credentials
 
 *Covered by USER-INFRA-001.1 — the same container serves all Users Service endpoints including `/auth/login` and `/auth/refresh`.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -498,7 +496,7 @@ SO THAT the login flow can persist and rotate refresh tokens
 * Table `users.refresh_tokens` exists with columns `(token_hash, user_id, expires_at, revoked)`
 * A unique index on `token_hash` is present
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -527,7 +525,7 @@ SO THAT I can detect credential-stuffing attacks or service degradation early
 **THEN**
 * An alert fires and is routed to the on-call channel
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -591,7 +589,7 @@ SO THAT other users see accurate information about me
 **THEN**
 * The API returns `422 Unprocessable Entity` with error code `AVATAR_TOO_LARGE`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -614,7 +612,7 @@ SO THAT I can review how my profile appears to others
 **THEN**
 * `GET /users/me` is called and the response populates avatar, display name, bio, follower count, and followee count
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -651,7 +649,7 @@ SO THAT I can update my details without navigating away
 **THEN**
 * A local preview of the image is shown before the upload is submitted
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -687,7 +685,7 @@ SO THAT the authenticated user can fetch their own profile and other services ca
 **THEN**
 * Response is `200 OK` with public fields `{id, username, display_name, avatar_url}`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -711,7 +709,7 @@ SO THAT authenticated users can update their profile fields
 * Only the supplied fields are updated in `users.users`
 * Response is `200 OK` with the full updated profile
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -719,7 +717,7 @@ SO THAT authenticated users can update their profile fields
 
 *Covered by USER-INFRA-001.1.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -743,7 +741,7 @@ SO THAT profile data can be stored and updated
 * Columns `display_name VARCHAR(100)`, `bio VARCHAR(300)`, and `avatar_url TEXT` exist on `users.users`
 * Existing rows have `NULL` for the new columns (no data loss)
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -757,7 +755,7 @@ SO THAT profile data can be stored and updated
 
 *Covered by USER-INFRA-001.4 — the existing error-rate alert covers all Users Service endpoints.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -822,7 +820,7 @@ SO THAT their posts appear in (or are removed from) my timeline feed
 **THEN**
 * The API returns `422 Unprocessable Entity` with error code `CANNOT_FOLLOW_SELF`
 
-**Architecture reference**: [Chapter 1 — Introduction and Goals](../../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 1 — Introduction and Goals](../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -862,7 +860,7 @@ SO THAT I can manage my follow relationships without leaving the page
 * A `DELETE /users/{id}/follow` request is sent
 * On success the button label changes to "Follow"
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -901,7 +899,7 @@ SO THAT authenticated users can follow another user
 **THEN**
 * Response is `200 OK` (no error, no duplicate row)
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -939,7 +937,7 @@ SO THAT authenticated users can unfollow another user
 **THEN**
 * Response is `204 No Content` (no error)
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -947,7 +945,7 @@ SO THAT authenticated users can unfollow another user
 
 *Covered by USER-INFRA-001.1 — the same container serves all Users Service endpoints including follow/unfollow.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -972,7 +970,7 @@ SO THAT follow relationships are persisted and queryable by the Posts Service fe
 * A composite primary key on `(follower_id, followee_id)` prevents duplicates
 * Foreign keys reference `users.users(id)` for both columns
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../../architecture/09-architecture-decisions.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../architecture/09-architecture-decisions.md)
 
 ---
 
@@ -1001,7 +999,7 @@ SO THAT degradation in the social graph is detected automatically
 **THEN**
 * The alert defined in USER-INFRA-001.4 fires
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -1050,7 +1048,7 @@ SO THAT I can manage my social graph
 **THEN**
 * A paginated list of that user's followers is returned
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -1073,7 +1071,7 @@ SO THAT I can browse the social graph
 **THEN**
 * A modal or page opens showing the paginated followers list fetched from `GET /users/{id}/followers`
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -1111,7 +1109,7 @@ SO THAT authenticated callers can retrieve the social graph for a given user
 * The endpoint returns `200 OK` with the list of followee IDs and public profiles
 * Until Chapter 5 documents this interface, this scenario is a to-be-defined dependency rather than an approved cross-context API
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -1119,7 +1117,7 @@ SO THAT authenticated callers can retrieve the social graph for a given user
 
 *Covered by USER-INFRA-001.1.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -1127,7 +1125,7 @@ SO THAT authenticated callers can retrieve the social graph for a given user
 
 *Covered by USER-INFRA-004.2 — the `users.follows` table created for USER-STORY-004 is the data store for follower/followee queries. No additional migration required.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -1141,4 +1139,4 @@ SO THAT authenticated callers can retrieve the social graph for a given user
 
 *Covered by USER-INFRA-001.4.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
