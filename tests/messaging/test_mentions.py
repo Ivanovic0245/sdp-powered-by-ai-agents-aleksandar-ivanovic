@@ -74,3 +74,20 @@ def test_msg_be_003_s2_given_unknown_handle_when_send_then_silently_ignored(
     # THEN: the message is saved normally, no mention record, no error
     assert message.text == "hey @ghostuser nobody home"
     assert mentions_repo.find_by_message(message.id) == []
+
+
+def test_msg_be_003_s3_given_multiple_mentions_when_send_then_one_row_per_user(
+    messaging, user_service, mentions_repo, alice, bob
+):
+    # GIVEN: message contains two valid @username handles
+    charlie = user_service.register("charlie@example.com", "charlie", VALID_PASSWORD)
+    conversation = messaging.start_conversation(alice.id, bob.id)
+    # WHEN: the message is sent
+    message = messaging.send_message(
+        sender_id=alice.id,
+        conversation_id=conversation.id,
+        text="pairing with @bob and @charlie today",
+    )
+    # THEN: one mention record per resolved user
+    mentions = mentions_repo.find_by_message(message.id)
+    assert {m.target_user_id for m in mentions} == {bob.id, charlie.id}
