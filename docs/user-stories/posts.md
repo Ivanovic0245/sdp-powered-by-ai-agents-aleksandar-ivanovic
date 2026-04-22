@@ -1,7 +1,5 @@
 # Posts / Timeline Domain — Story Bundles
 
----
-
 ## POST-STORY-001 — Create a post ✅ [CORE]
 
 AS A logged-in user
@@ -64,7 +62,7 @@ SO THAT my followers can see it in their timeline feed
 **THEN**
 * The API returns `401 Unauthorized`
 
-**Architecture reference**: [Chapter 1 — Introduction and Goals](../../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md)
+**Architecture reference**: [Chapter 1 — Introduction and Goals](../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md)
 
 ---
 
@@ -89,7 +87,7 @@ SO THAT I can publish content from the timeline page
 * On `201 Created` the new post is prepended to the feed without a full page reload
 * The compose area is cleared
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -118,7 +116,7 @@ SO THAT I get immediate feedback without a round-trip to the server
 **THEN**
 * The counter turns red and the submit button is disabled
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -156,7 +154,7 @@ SO THAT authenticated users can create posts
 **THEN**
 * The token is verified locally; no HTTP call to the Users Service is made for auth
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md), [Chapter 9 — Architecture Decisions](../../architecture/09-architecture-decisions.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md), [Chapter 9 — Architecture Decisions](../architecture/09-architecture-decisions.md)
 
 ---
 
@@ -194,7 +192,7 @@ SO THAT the frontend can render posts without a separate profile lookup
 * The post is returned with `author: null`
 * A structured warning is logged with the `trace_id`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -219,7 +217,7 @@ SO THAT it can be deployed independently behind the nginx reverse proxy
 * The service is reachable on its configured port
 * `GET /health` returns `200 OK`
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -243,7 +241,7 @@ SO THAT the Posts Service can persist user content
 * Table `posts.posts` exists with columns `(id, author_id, text, created_at)`
 * The `(author_id, created_at DESC)` index is managed by the feed-story migration (POST-INFRA-002.2)
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../../architecture/09-architecture-decisions.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../architecture/09-architecture-decisions.md)
 
 ---
 
@@ -285,7 +283,7 @@ SO THAT I am notified when post creation is degraded
 **THEN**
 * An alert fires and is routed to the on-call channel
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -350,7 +348,7 @@ SO THAT I can stay up to date with their content
 **THEN**
 * The response is returned in under 500 ms (p95)
 
-**Architecture reference**: [Chapter 1 — Introduction and Goals](../../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md), [Chapter 9 — Architecture Decisions](../../architecture/09-architecture-decisions.md)
+**Architecture reference**: [Chapter 1 — Introduction and Goals](../architecture/01-introduction-and-goals.md), [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md), [Chapter 9 — Architecture Decisions](../architecture/09-architecture-decisions.md)
 
 ---
 
@@ -389,7 +387,7 @@ SO THAT I can browse content without manual pagination
 * A `GET /feed?page=<next>` request is sent
 * New posts are appended below existing ones without replacing them
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -429,7 +427,7 @@ SO THAT authenticated users can retrieve their aggregated timeline
 * Author profiles are fetched via a batch Users Service contract for the unique author IDs in the page (candidate: `GET /users?ids={id1},{id2},...`; cross-context interface to be formally defined in architecture docs)
 * Each post item includes `author: {id, username, display_name, avatar_url}`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../../architecture/06-runtime-view.md), [Chapter 9 — Architecture Decisions](../../architecture/09-architecture-decisions.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 6 — Runtime View](../architecture/06-runtime-view.md), [Chapter 9 — Architecture Decisions](../architecture/09-architecture-decisions.md)
 
 ---
 
@@ -469,7 +467,7 @@ SO THAT the feed query knows which `author_id` values to include
 * The feed returns `200 OK` with an empty `items` array
 * A structured warning is logged with the `trace_id`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -477,7 +475,7 @@ SO THAT the feed query knows which `author_id` values to include
 
 *Covered by POST-INFRA-001.1 — the same container serves `/feed`.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -501,7 +499,7 @@ SO THAT fan-out-on-read feed queries meet the 500 ms performance budget
 * `EXPLAIN ANALYZE` on the feed query shows an index scan on `(author_id, created_at DESC)`
 * Migration is idempotent (`CREATE INDEX IF NOT EXISTS`)
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../../architecture/09-architecture-decisions.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 9 — Architecture Decisions](../architecture/09-architecture-decisions.md)
 
 ---
 
@@ -530,7 +528,7 @@ SO THAT performance degradation is caught before users notice
 **THEN**
 * An alert fires and is routed to the on-call channel
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../../architecture/08-cross-cutting-concepts.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md), [Chapter 8 — Cross-Cutting Concepts](../architecture/08-cross-cutting-concepts.md)
 
 ---
 
@@ -582,7 +580,7 @@ SO THAT I can express appreciation for content
 **THEN**
 * Response is `200 OK` with no duplicate like record created
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -607,7 +605,7 @@ SO THAT I can like or unlike without leaving the feed
 * `POST /posts/{id}/like` is sent in the background
 * On error the count reverts and a toast error is shown
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -646,7 +644,7 @@ SO THAT authenticated users can like and unlike posts
 * The row is deleted from `posts.likes`
 * Response is `200 OK` with updated `like_count`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -654,7 +652,7 @@ SO THAT authenticated users can like and unlike posts
 
 *Covered by POST-INFRA-001.1.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -678,7 +676,7 @@ SO THAT like relationships can be persisted
 * Table `posts.likes` exists with columns `(post_id, user_id, created_at)`
 * A composite primary key on `(post_id, user_id)` prevents duplicate likes
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -692,7 +690,7 @@ SO THAT like relationships can be persisted
 
 *Covered by POST-INFRA-001.4.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -744,7 +742,7 @@ SO THAT I can correct mistakes or remove content
 **THEN**
 * The API returns `403 Forbidden` with error code `NOT_POST_AUTHOR`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -781,7 +779,7 @@ SO THAT I can manage my content inline
 **THEN**
 * `DELETE /posts/{id}` is called and the post is removed from the feed on `204`
 
-**Architecture reference**: [Chapter 3 — Context and Scope](../../architecture/03-context-and-scope.md)
+**Architecture reference**: [Chapter 3 — Context and Scope](../architecture/03-context-and-scope.md)
 
 ---
 
@@ -821,7 +819,7 @@ SO THAT authors can update or remove their posts
 * Associated `posts.likes` rows are cascade-deleted
 * Response is `204 No Content`
 
-**Architecture reference**: [Chapter 5 — Building Block View](../../architecture/05-building-block-view.md)
+**Architecture reference**: [Chapter 5 — Building Block View](../architecture/05-building-block-view.md)
 
 ---
 
@@ -829,7 +827,7 @@ SO THAT authors can update or remove their posts
 
 *Covered by POST-INFRA-001.1.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -853,7 +851,7 @@ SO THAT edited posts can be distinguished from original ones
 * Column `edited_at TIMESTAMPTZ NULL` exists on `posts.posts`
 * Existing rows have `edited_at = NULL`
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)
 
 ---
 
@@ -867,4 +865,4 @@ SO THAT edited posts can be distinguished from original ones
 
 *Covered by POST-INFRA-001.4.*
 
-**Architecture reference**: [Chapter 7 — Deployment View](../../architecture/07-deployment-view.md)
+**Architecture reference**: [Chapter 7 — Deployment View](../architecture/07-deployment-view.md)

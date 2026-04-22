@@ -1,0 +1,90 @@
+import re
+
+from src.users.service import UserService
+
+from .exceptions import (
+    MessageTextRequiredError,
+    NotAParticipantError,
+    RecipientNotFoundError,
+    UnauthorizedError,
+)
+from .models import Conversation, Mention, Message
+from .repository import (
+    InMemoryConversationRepository,
+    InMemoryMentionRepository,
+    InMemoryMessageRepository,
+)
+
+MENTION_PATTERN = re.compile(r"@(\w+)")
+
+
+class MessagingService:
+    def __init__(
+        self,
+        conversations: InMemoryConversationRepository,
+        messages: InMemoryMessageRepository,
+        users: UserService,
+        mentions: InMemoryMentionRepository | None = None,
+    ):
+        self._conversations = conversations
+        self._messages = messages
+        self._users = users
+        self._mentions = mentions
+
+    def start_conversation(self, user_a_id: str, user_b_id: str) -> Conversation:
+        conversation = Conversation(participant_ids=(user_a_id, user_b_id))
+        return self._conversations.save(conversation)
+
+    def send_message(self, sender_id: str, conversation_id: str, text: str) -> Message:
+        if not sender_id:
+            raise UnauthorizedError("UNAUTHORIZED")
+        if not text or not text.strip():
+            raise MessageTextRequiredError("MESSAGE_TEXT_REQUIRED")
+        message = Message(
+            conversation_id=conversation_id, sender_id=sender_id, text=text
+        )
+        saved = self._messages.save(message)
+        if self._mentions is not None:
+            for handle in MENTION_PATTERN.findall(text):
+                target = self._users.resolve_username(handle)
+                if target is not None:
+                    self._mentions.save(
+                        Mention(message_id=saved.id, target_user_id=target.id)
+                    )
+        return saved
+
+    def send_message_to(self, sender_id: str, recipient_id: str, text: str) -> Message:
+        if self._users.get_profile(recipient_id) is None:
+            raise RecipientNotFoundError("USER_NOT_FOUND")
+        conversation = self.start_conversation(sender_id, recipient_id)
+        return self.send_message(
+            sender_id=sender_id, conversation_id=conversation.id, text=text
+        )
+
+    def get_conversation(self, conversation_id: str) -> Conversation | None:
+        return self._conversations.find_by_id(conversation_id)
+
+    def list_conversations(self, requester_id: str) -> list[Conversation]:
+        return self._conversations.find_by_participant(requester_id)
+
+    def get_messages(
+        self,
+        requester_id: str,
+        conversation_id: str,
+        page: int = 1,
+        page_size: int = 50,
+    ) -> dict:
+        conversation = self._conversations.find_by_id(conversation_id)
+        if conversation is None or requester_id not in conversation.participant_ids:
+            raise NotAParticipantError("NOT_A_PARTICIPANT")
+        all_msgs = self._messages.find_by_conversation(conversation_id)
+        start = (page - 1) * page_size
+        end = start + page_size
+        items = all_msgs[start:end]
+        has_next = end < len(all_msgs)
+        return {
+            "items": items,
+            "page": page,
+            "page_size": page_size,
+            "has_next": has_next,
+        }

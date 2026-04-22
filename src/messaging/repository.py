@@ -1,0 +1,43 @@
+from .models import Conversation, Mention, Message
+
+
+class InMemoryConversationRepository:
+    def __init__(self):
+        self._store: dict[str, Conversation] = {}
+
+    def save(self, conversation: Conversation) -> Conversation:
+        self._store[conversation.id] = conversation
+        return conversation
+
+    def find_by_id(self, conversation_id: str) -> Conversation | None:
+        return self._store.get(conversation_id)
+
+    def find_by_participant(self, user_id: str) -> list[Conversation]:
+        return [c for c in self._store.values() if user_id in c.participant_ids]
+
+
+class InMemoryMessageRepository:
+    def __init__(self):
+        self._store: dict[str, Message] = {}
+
+    def save(self, message: Message) -> Message:
+        self._store[message.id] = message
+        return message
+
+    def find_by_conversation(self, conversation_id: str) -> list[Message]:
+        return sorted(
+            (m for m in self._store.values() if m.conversation_id == conversation_id),
+            key=lambda m: m.created_at,
+        )
+
+
+class InMemoryMentionRepository:
+    def __init__(self):
+        self._store: dict[str, Mention] = {}
+
+    def save(self, mention: Mention) -> Mention:
+        self._store[mention.id] = mention
+        return mention
+
+    def find_by_message(self, message_id: str) -> list[Mention]:
+        return [m for m in self._store.values() if m.message_id == message_id]
