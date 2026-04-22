@@ -1,8 +1,17 @@
 import hashlib
+import secrets
+from dataclasses import dataclass
 
 from .exceptions import EmailAlreadyExistsError, InvalidInputError
 from .models import User
 from .repository import InMemoryUserRepository
+
+
+@dataclass
+class LoginResult:
+    access_token: str
+    refresh_token: str
+    user_id: str
 
 
 class UserService:
@@ -25,3 +34,11 @@ class UserService:
         password_hash = hashlib.sha256(password.encode()).hexdigest()
         user = User(email=email, username=username, password_hash=password_hash)
         return self._repo.save(user)
+
+    def login(self, email: str, password: str) -> LoginResult:
+        user = self._repo.find_by_email(email)
+        return LoginResult(
+            access_token=secrets.token_urlsafe(32),
+            refresh_token=secrets.token_urlsafe(32),
+            user_id=user.id,
+        )
