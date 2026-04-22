@@ -8,3 +8,7 @@ class MessageTextRequiredError(Exception):
 
 class UnauthorizedError(Exception):
     pass
+
+
+class NotAParticipantError(Exception):
+    pass

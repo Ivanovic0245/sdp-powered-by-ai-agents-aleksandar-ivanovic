@@ -2,6 +2,7 @@ from src.users.service import UserService
 
 from .exceptions import (
     MessageTextRequiredError,
+    NotAParticipantError,
     RecipientNotFoundError,
     UnauthorizedError,
 )
@@ -44,3 +45,28 @@ class MessagingService:
 
     def get_conversation(self, conversation_id: str) -> Conversation | None:
         return self._conversations.find_by_id(conversation_id)
+
+    def list_conversations(self, requester_id: str) -> list[Conversation]:
+        return self._conversations.find_by_participant(requester_id)
+
+    def get_messages(
+        self,
+        requester_id: str,
+        conversation_id: str,
+        page: int = 1,
+        page_size: int = 50,
+    ) -> dict:
+        conversation = self._conversations.find_by_id(conversation_id)
+        if conversation is None or requester_id not in conversation.participant_ids:
+            raise NotAParticipantError("NOT_A_PARTICIPANT")
+        all_msgs = self._messages.find_by_conversation(conversation_id)
+        start = (page - 1) * page_size
+        end = start + page_size
+        items = all_msgs[start:end]
+        has_next = end < len(all_msgs)
+        return {
+            "items": items,
+            "page": page,
+            "page_size": page_size,
+            "has_next": has_next,
+        }
