@@ -41,6 +41,8 @@ class UserService:
 
     def login(self, email: str, password: str) -> LoginResult:
         user = self._repo.find_by_email(email)
+        if user is None:
+            raise InvalidCredentialsError("INVALID_CREDENTIALS")
         if hashlib.sha256(password.encode()).hexdigest() != user.password_hash:
             raise InvalidCredentialsError("INVALID_CREDENTIALS")
         return LoginResult(

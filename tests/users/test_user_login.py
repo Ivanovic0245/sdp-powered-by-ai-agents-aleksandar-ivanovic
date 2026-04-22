@@ -37,3 +37,14 @@ def test_user_be_002_s2_given_wrong_password_when_login_then_invalid_credentials
     # THEN: InvalidCredentialsError is raised (maps to 401 INVALID_CREDENTIALS)
     with pytest.raises(InvalidCredentialsError):
         service.login("alice@example.com", "wrongpassword")
+
+
+def test_user_be_002_s3_given_unknown_email_when_login_then_invalid_credentials(
+    service,
+):
+    # GIVEN: no user registered with the submitted email
+    # WHEN: a login attempt is made for that email
+    # THEN: InvalidCredentialsError is raised (same error as wrong password,
+    # so the response does not leak whether the email exists)
+    with pytest.raises(InvalidCredentialsError):
+        service.login("ghost@example.com", VALID_PASSWORD)
