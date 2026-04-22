@@ -2,7 +2,11 @@ import hashlib
 import secrets
 from dataclasses import dataclass
 
-from .exceptions import EmailAlreadyExistsError, InvalidInputError
+from .exceptions import (
+    EmailAlreadyExistsError,
+    InvalidCredentialsError,
+    InvalidInputError,
+)
 from .models import User
 from .repository import InMemoryUserRepository
 
@@ -37,6 +41,8 @@ class UserService:
 
     def login(self, email: str, password: str) -> LoginResult:
         user = self._repo.find_by_email(email)
+        if hashlib.sha256(password.encode()).hexdigest() != user.password_hash:
+            raise InvalidCredentialsError("INVALID_CREDENTIALS")
         return LoginResult(
             access_token=secrets.token_urlsafe(32),
             refresh_token=secrets.token_urlsafe(32),
