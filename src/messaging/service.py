@@ -1,6 +1,6 @@
 from src.users.service import UserService
 
-from .exceptions import RecipientNotFoundError
+from .exceptions import MessageTextRequiredError, RecipientNotFoundError
 from .models import Conversation, Message
 from .repository import InMemoryConversationRepository, InMemoryMessageRepository
 
@@ -21,6 +21,8 @@ class MessagingService:
         return self._conversations.save(conversation)
 
     def send_message(self, sender_id: str, conversation_id: str, text: str) -> Message:
+        if not text or not text.strip():
+            raise MessageTextRequiredError("MESSAGE_TEXT_REQUIRED")
         message = Message(
             conversation_id=conversation_id, sender_id=sender_id, text=text
         )

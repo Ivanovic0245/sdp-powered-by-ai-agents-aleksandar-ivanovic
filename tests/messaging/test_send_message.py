@@ -1,6 +1,6 @@
 import pytest
 
-from src.messaging.exceptions import RecipientNotFoundError
+from src.messaging.exceptions import MessageTextRequiredError, RecipientNotFoundError
 from src.messaging.repository import (
     InMemoryConversationRepository,
     InMemoryMessageRepository,
@@ -79,3 +79,18 @@ def test_msg_be_001_s3_given_unknown_recipient_when_send_then_recipient_not_foun
             sender_id=alice.id, recipient_id=unknown_id, text="hi"
         )
     assert "USER_NOT_FOUND" in str(exc.value)
+
+
+@pytest.mark.parametrize("blank", ["", "   ", "\n\t "])
+def test_msg_be_001_s4_given_empty_or_whitespace_text_when_send_then_text_required(
+    messaging, alice, bob, blank
+):
+    # GIVEN: the user submits a message with empty or whitespace-only text
+    conversation = messaging.start_conversation(alice.id, bob.id)
+    # WHEN: the request reaches the Messaging Service
+    # THEN: MessageTextRequiredError is raised with code MESSAGE_TEXT_REQUIRED
+    with pytest.raises(MessageTextRequiredError) as exc:
+        messaging.send_message(
+            sender_id=alice.id, conversation_id=conversation.id, text=blank
+        )
+    assert "MESSAGE_TEXT_REQUIRED" in str(exc.value)
