@@ -58,3 +58,19 @@ def test_msg_be_003_s1_given_mention_when_send_then_mention_stored(
     assert len(mentions) == 1
     assert mentions[0].message_id == message.id
     assert mentions[0].target_user_id == bob.id
+
+
+def test_msg_be_003_s2_given_unknown_handle_when_send_then_silently_ignored(
+    messaging, mentions_repo, alice, bob
+):
+    # GIVEN: the message text contains @nonexistentuser
+    conversation = messaging.start_conversation(alice.id, bob.id)
+    # WHEN: the message is sent
+    message = messaging.send_message(
+        sender_id=alice.id,
+        conversation_id=conversation.id,
+        text="hey @ghostuser nobody home",
+    )
+    # THEN: the message is saved normally, no mention record, no error
+    assert message.text == "hey @ghostuser nobody home"
+    assert mentions_repo.find_by_message(message.id) == []
