@@ -25,3 +25,6 @@ class UserService:
         password_hash = hashlib.sha256(password.encode()).hexdigest()
         user = User(email=email, username=username, password_hash=password_hash)
         return self._repo.save(user)
+
+    def get_profile(self, user_id: str) -> User:
+        return self._repo.find_by_id(user_id)
