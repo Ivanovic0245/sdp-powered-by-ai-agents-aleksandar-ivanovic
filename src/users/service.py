@@ -26,7 +26,7 @@ class UserService:
         user = User(email=email, username=username, password_hash=password_hash)
         return self._repo.save(user)
 
-    def get_profile(self, user_id: str) -> User:
+    def get_profile(self, user_id: str) -> User | None:
         return self._repo.find_by_id(user_id)
 
     def update_profile(
@@ -45,7 +45,7 @@ class UserService:
     MAX_AVATAR_BYTES = 2 * 1024 * 1024
 
     def upload_avatar(
-        self, user_id: str, image_bytes: bytes, content_type: str
+        self, user_id: str, image_bytes: bytes, _content_type: str
     ) -> User:
         if len(image_bytes) > self.MAX_AVATAR_BYTES:
             raise AvatarTooLargeError("AVATAR_TOO_LARGE")

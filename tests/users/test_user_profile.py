@@ -51,12 +51,23 @@ def test_user_be_003_s3_given_valid_avatar_when_upload_then_avatar_url_set(servi
     image_bytes = b"\x89PNG\r\n\x1a\n" + b"\x00" * (1 * 1024 * 1024)
     # WHEN: the avatar is submitted
     updated = service.upload_avatar(
-        registered.id, image_bytes, content_type="image/png"
+        registered.id, image_bytes, _content_type="image/png"
     )
     # THEN: avatar_url is set on the user record and returned
     assert updated.avatar_url is not None
     assert updated.avatar_url.startswith("/avatars/")
     assert service.get_profile(registered.id).avatar_url == updated.avatar_url
+
+
+def test_user_be_003_s3_given_avatar_exactly_2mb_when_upload_then_accepted(service):
+    # GIVEN: a registered user uploads an avatar of exactly the 2 MB boundary
+    registered = service.register("alice@example.com", "alice", VALID_PASSWORD)
+    boundary = b"\x89PNG\r\n\x1a\n" + b"\x00" * (2 * 1024 * 1024 - 8)
+    assert len(boundary) == 2 * 1024 * 1024
+    # WHEN: the avatar is submitted
+    updated = service.upload_avatar(registered.id, boundary, _content_type="image/png")
+    # THEN: upload is accepted and avatar_url is set (boundary is inclusive)
+    assert updated.avatar_url is not None
 
 
 def test_user_be_003_s4_given_oversized_avatar_when_upload_then_rejected(service):
@@ -66,5 +77,5 @@ def test_user_be_003_s4_given_oversized_avatar_when_upload_then_rejected(service
     # WHEN: the request reaches the Users Service
     # THEN: AvatarTooLargeError is raised with code AVATAR_TOO_LARGE
     with pytest.raises(AvatarTooLargeError) as exc:
-        service.upload_avatar(registered.id, oversized, content_type="image/png")
+        service.upload_avatar(registered.id, oversized, _content_type="image/png")
     assert "AVATAR_TOO_LARGE" in str(exc.value)
