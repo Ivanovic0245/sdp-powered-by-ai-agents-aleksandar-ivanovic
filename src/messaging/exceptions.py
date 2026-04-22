@@ -4,3 +4,7 @@ class RecipientNotFoundError(Exception):
 
 class MessageTextRequiredError(Exception):
     pass
+
+
+class UnauthorizedError(Exception):
+    pass

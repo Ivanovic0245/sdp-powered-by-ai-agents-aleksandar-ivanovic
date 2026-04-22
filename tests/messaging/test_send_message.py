@@ -1,6 +1,10 @@
 import pytest
 
-from src.messaging.exceptions import MessageTextRequiredError, RecipientNotFoundError
+from src.messaging.exceptions import (
+    MessageTextRequiredError,
+    RecipientNotFoundError,
+    UnauthorizedError,
+)
 from src.messaging.repository import (
     InMemoryConversationRepository,
     InMemoryMessageRepository,
@@ -94,3 +98,16 @@ def test_msg_be_001_s4_given_empty_or_whitespace_text_when_send_then_text_requir
             sender_id=alice.id, conversation_id=conversation.id, text=blank
         )
     assert "MESSAGE_TEXT_REQUIRED" in str(exc.value)
+
+
+def test_msg_be_001_s5_given_no_sender_when_send_then_unauthorized(
+    messaging, alice, bob
+):
+    # GIVEN: the request carries no JWT (sender_id is absent)
+    conversation = messaging.start_conversation(alice.id, bob.id)
+    # WHEN: the Messaging Service is called without an authenticated sender
+    # THEN: UnauthorizedError is raised (equivalent of HTTP 401)
+    with pytest.raises(UnauthorizedError):
+        messaging.send_message(
+            sender_id=None, conversation_id=conversation.id, text="hi"
+        )

@@ -1,6 +1,10 @@
 from src.users.service import UserService
 
-from .exceptions import MessageTextRequiredError, RecipientNotFoundError
+from .exceptions import (
+    MessageTextRequiredError,
+    RecipientNotFoundError,
+    UnauthorizedError,
+)
 from .models import Conversation, Message
 from .repository import InMemoryConversationRepository, InMemoryMessageRepository
 
@@ -21,6 +25,8 @@ class MessagingService:
         return self._conversations.save(conversation)
 
     def send_message(self, sender_id: str, conversation_id: str, text: str) -> Message:
+        if not sender_id:
+            raise UnauthorizedError("UNAUTHORIZED")
         if not text or not text.strip():
             raise MessageTextRequiredError("MESSAGE_TEXT_REQUIRED")
         message = Message(
