@@ -1,5 +1,6 @@
 import pytest
 
+from src.users.exceptions import AvatarTooLargeError
 from src.users.repository import InMemoryUserRepository
 from src.users.service import UserService
 
@@ -56,3 +57,14 @@ def test_user_be_003_s3_given_valid_avatar_when_upload_then_avatar_url_set(servi
     assert updated.avatar_url is not None
     assert updated.avatar_url.startswith("/avatars/")
     assert service.get_profile(registered.id).avatar_url == updated.avatar_url
+
+
+def test_user_be_003_s4_given_oversized_avatar_when_upload_then_rejected(service):
+    # GIVEN: a registered user uploads a file larger than 2 MB
+    registered = service.register("alice@example.com", "alice", VALID_PASSWORD)
+    oversized = b"\x89PNG\r\n\x1a\n" + b"\x00" * (2 * 1024 * 1024 + 1)
+    # WHEN: the request reaches the Users Service
+    # THEN: AvatarTooLargeError is raised with code AVATAR_TOO_LARGE
+    with pytest.raises(AvatarTooLargeError) as exc:
+        service.upload_avatar(registered.id, oversized, content_type="image/png")
+    assert "AVATAR_TOO_LARGE" in str(exc.value)

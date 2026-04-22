@@ -2,6 +2,10 @@ class EmailAlreadyExistsError(Exception):
     pass
 
 
+class AvatarTooLargeError(Exception):
+    pass
+
+
 class InvalidInputError(Exception):
     def __init__(self, field: str, message: str):
         self.field = field

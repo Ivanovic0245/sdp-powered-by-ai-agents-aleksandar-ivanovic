@@ -1,6 +1,6 @@
 import hashlib
 
-from .exceptions import EmailAlreadyExistsError, InvalidInputError
+from .exceptions import AvatarTooLargeError, EmailAlreadyExistsError, InvalidInputError
 from .models import User
 from .repository import InMemoryUserRepository
 
@@ -42,9 +42,13 @@ class UserService:
             user.bio = bio
         return self._repo.save(user)
 
+    MAX_AVATAR_BYTES = 2 * 1024 * 1024
+
     def upload_avatar(
         self, user_id: str, image_bytes: bytes, content_type: str
     ) -> User:
+        if len(image_bytes) > self.MAX_AVATAR_BYTES:
+            raise AvatarTooLargeError("AVATAR_TOO_LARGE")
         user = self._repo.find_by_id(user_id)
         user.avatar_url = f"/avatars/{user.id}"
         return self._repo.save(user)
