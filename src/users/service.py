@@ -29,6 +29,9 @@ class UserService:
     def get_profile(self, user_id: str) -> User | None:
         return self._repo.find_by_id(user_id)
 
+    def resolve_username(self, username: str) -> User | None:
+        return self._repo.find_by_username(username)
+
     def update_profile(
         self,
         user_id: str,

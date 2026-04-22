@@ -1,3 +1,5 @@
+import re
+
 from src.users.service import UserService
 
 from .exceptions import (
@@ -6,8 +8,14 @@ from .exceptions import (
     RecipientNotFoundError,
     UnauthorizedError,
 )
-from .models import Conversation, Message
-from .repository import InMemoryConversationRepository, InMemoryMessageRepository
+from .models import Conversation, Mention, Message
+from .repository import (
+    InMemoryConversationRepository,
+    InMemoryMentionRepository,
+    InMemoryMessageRepository,
+)
+
+MENTION_PATTERN = re.compile(r"@(\w+)")
 
 
 class MessagingService:
@@ -16,10 +24,12 @@ class MessagingService:
         conversations: InMemoryConversationRepository,
         messages: InMemoryMessageRepository,
         users: UserService,
+        mentions: InMemoryMentionRepository | None = None,
     ):
         self._conversations = conversations
         self._messages = messages
         self._users = users
+        self._mentions = mentions
 
     def start_conversation(self, user_a_id: str, user_b_id: str) -> Conversation:
         conversation = Conversation(participant_ids=(user_a_id, user_b_id))
@@ -33,7 +43,15 @@ class MessagingService:
         message = Message(
             conversation_id=conversation_id, sender_id=sender_id, text=text
         )
-        return self._messages.save(message)
+        saved = self._messages.save(message)
+        if self._mentions is not None:
+            for handle in MENTION_PATTERN.findall(text):
+                target = self._users.resolve_username(handle)
+                if target is not None:
+                    self._mentions.save(
+                        Mention(message_id=saved.id, target_user_id=target.id)
+                    )
+        return saved
 
     def send_message_to(self, sender_id: str, recipient_id: str, text: str) -> Message:
         if self._users.get_profile(recipient_id) is None:

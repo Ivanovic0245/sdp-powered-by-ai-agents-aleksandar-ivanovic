@@ -14,6 +14,12 @@ class InMemoryUserRepository:
                 return user
         return None
 
+    def find_by_username(self, username: str) -> User | None:
+        for user in self._store.values():
+            if user.username == username:
+                return user
+        return None
+
     def save(self, user: User) -> User:
         self._store[user.email] = user
         return user
