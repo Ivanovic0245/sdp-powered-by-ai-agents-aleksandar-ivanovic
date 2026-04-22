@@ -19,5 +19,9 @@ build/
 # PlantUML
 scripts/plantuml.jar
 
+# Sphinx build output and generated copy of root README
+docs/_build/
+docs/README.md
+
 # OS
 .DS_Store
