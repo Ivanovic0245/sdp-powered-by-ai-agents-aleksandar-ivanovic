@@ -28,3 +28,16 @@ class UserService:
 
     def get_profile(self, user_id: str) -> User:
         return self._repo.find_by_id(user_id)
+
+    def update_profile(
+        self,
+        user_id: str,
+        display_name: str | None = None,
+        bio: str | None = None,
+    ) -> User:
+        user = self._repo.find_by_id(user_id)
+        if display_name is not None:
+            user.display_name = display_name
+        if bio is not None:
+            user.bio = bio
+        return self._repo.save(user)
