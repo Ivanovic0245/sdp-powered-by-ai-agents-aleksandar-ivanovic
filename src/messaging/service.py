@@ -2,6 +2,7 @@ from src.users.service import UserService
 
 from .exceptions import (
     MessageTextRequiredError,
+    NotAParticipantError,
     RecipientNotFoundError,
     UnauthorizedError,
 )
@@ -52,6 +53,9 @@ class MessagingService:
         page: int = 1,
         page_size: int = 50,
     ) -> dict:
+        conversation = self._conversations.find_by_id(conversation_id)
+        if conversation is None or requester_id not in conversation.participant_ids:
+            raise NotAParticipantError("NOT_A_PARTICIPANT")
         all_msgs = self._messages.find_by_conversation(conversation_id)
         start = (page - 1) * page_size
         end = start + page_size
