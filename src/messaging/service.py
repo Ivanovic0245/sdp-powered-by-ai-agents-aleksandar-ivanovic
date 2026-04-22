@@ -24,3 +24,12 @@ class MessagingService:
             conversation_id=conversation_id, sender_id=sender_id, text=text
         )
         return self._messages.save(message)
+
+    def send_message_to(self, sender_id: str, recipient_id: str, text: str) -> Message:
+        conversation = self.start_conversation(sender_id, recipient_id)
+        return self.send_message(
+            sender_id=sender_id, conversation_id=conversation.id, text=text
+        )
+
+    def get_conversation(self, conversation_id: str) -> Conversation | None:
+        return self._conversations.find_by_id(conversation_id)

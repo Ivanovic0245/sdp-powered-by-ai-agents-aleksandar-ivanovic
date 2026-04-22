@@ -49,3 +49,18 @@ def test_msg_be_001_s1_given_existing_conversation_when_send_then_message_persis
     assert message.conversation_id == conversation.id
     assert message.sender_id == alice.id
     assert message.text == "hi bob"
+
+
+def test_msg_be_001_s2_given_no_conversation_when_send_then_conversation_created(
+    messaging, alice, bob
+):
+    # GIVEN: no conversation exists between alice and bob; bob exists in Users Service
+    # WHEN: alice sends a message to bob for the first time (no conversation_id)
+    message = messaging.send_message_to(
+        sender_id=alice.id, recipient_id=bob.id, text="hi bob"
+    )
+    # THEN: a new conversation is created and the message is persisted in it
+    assert message.conversation_id is not None
+    conversation = messaging.get_conversation(message.conversation_id)
+    assert conversation is not None
+    assert set(conversation.participant_ids) == {alice.id, bob.id}
