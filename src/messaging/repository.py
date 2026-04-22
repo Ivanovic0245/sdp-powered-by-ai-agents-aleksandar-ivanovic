@@ -20,3 +20,9 @@ class InMemoryMessageRepository:
     def save(self, message: Message) -> Message:
         self._store[message.id] = message
         return message
+
+    def find_by_conversation(self, conversation_id: str) -> list[Message]:
+        return sorted(
+            (m for m in self._store.values() if m.conversation_id == conversation_id),
+            key=lambda m: m.created_at,
+        )

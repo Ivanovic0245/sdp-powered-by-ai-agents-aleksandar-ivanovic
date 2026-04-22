@@ -44,3 +44,22 @@ class MessagingService:
 
     def get_conversation(self, conversation_id: str) -> Conversation | None:
         return self._conversations.find_by_id(conversation_id)
+
+    def get_messages(
+        self,
+        requester_id: str,
+        conversation_id: str,
+        page: int = 1,
+        page_size: int = 50,
+    ) -> dict:
+        all_msgs = self._messages.find_by_conversation(conversation_id)
+        start = (page - 1) * page_size
+        end = start + page_size
+        items = all_msgs[start:end]
+        has_next = end < len(all_msgs)
+        return {
+            "items": items,
+            "page": page,
+            "page_size": page_size,
+            "has_next": has_next,
+        }
