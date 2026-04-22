@@ -1,4 +1,4 @@
-from .models import Conversation, Message
+from .models import Conversation, Mention, Message
 
 
 class InMemoryConversationRepository:
@@ -29,3 +29,15 @@ class InMemoryMessageRepository:
             (m for m in self._store.values() if m.conversation_id == conversation_id),
             key=lambda m: m.created_at,
         )
+
+
+class InMemoryMentionRepository:
+    def __init__(self):
+        self._store: dict[str, Mention] = {}
+
+    def save(self, mention: Mention) -> Mention:
+        self._store[mention.id] = mention
+        return mention
+
+    def find_by_message(self, message_id: str) -> list[Mention]:
+        return [m for m in self._store.values() if m.message_id == message_id]
