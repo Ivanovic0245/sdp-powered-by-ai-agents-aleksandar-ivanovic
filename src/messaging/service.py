@@ -1,5 +1,6 @@
 from src.users.service import UserService
 
+from .exceptions import RecipientNotFoundError
 from .models import Conversation, Message
 from .repository import InMemoryConversationRepository, InMemoryMessageRepository
 
@@ -26,6 +27,8 @@ class MessagingService:
         return self._messages.save(message)
 
     def send_message_to(self, sender_id: str, recipient_id: str, text: str) -> Message:
+        if self._users.get_profile(recipient_id) is None:
+            raise RecipientNotFoundError("USER_NOT_FOUND")
         conversation = self.start_conversation(sender_id, recipient_id)
         return self.send_message(
             sender_id=sender_id, conversation_id=conversation.id, text=text

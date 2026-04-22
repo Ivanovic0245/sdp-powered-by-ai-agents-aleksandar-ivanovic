@@ -1,0 +1,2 @@
+class RecipientNotFoundError(Exception):
+    pass

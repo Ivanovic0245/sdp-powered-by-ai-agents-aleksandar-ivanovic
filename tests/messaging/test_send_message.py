@@ -1,5 +1,6 @@
 import pytest
 
+from src.messaging.exceptions import RecipientNotFoundError
 from src.messaging.repository import (
     InMemoryConversationRepository,
     InMemoryMessageRepository,
@@ -64,3 +65,17 @@ def test_msg_be_001_s2_given_no_conversation_when_send_then_conversation_created
     conversation = messaging.get_conversation(message.conversation_id)
     assert conversation is not None
     assert set(conversation.participant_ids) == {alice.id, bob.id}
+
+
+def test_msg_be_001_s3_given_unknown_recipient_when_send_then_recipient_not_found(
+    messaging, alice
+):
+    # GIVEN: the recipient user id does not exist in the Users Service
+    unknown_id = "00000000-0000-0000-0000-000000000000"
+    # WHEN: the user attempts to send a message to that id
+    # THEN: RecipientNotFoundError is raised with code USER_NOT_FOUND
+    with pytest.raises(RecipientNotFoundError) as exc:
+        messaging.send_message_to(
+            sender_id=alice.id, recipient_id=unknown_id, text="hi"
+        )
+    assert "USER_NOT_FOUND" in str(exc.value)
