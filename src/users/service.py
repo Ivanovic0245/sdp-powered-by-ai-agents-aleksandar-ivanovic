@@ -41,3 +41,10 @@ class UserService:
         if bio is not None:
             user.bio = bio
         return self._repo.save(user)
+
+    def upload_avatar(
+        self, user_id: str, image_bytes: bytes, content_type: str
+    ) -> User:
+        user = self._repo.find_by_id(user_id)
+        user.avatar_url = f"/avatars/{user.id}"
+        return self._repo.save(user)
