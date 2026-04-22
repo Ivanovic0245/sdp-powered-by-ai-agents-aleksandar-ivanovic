@@ -46,6 +46,9 @@ class MessagingService:
     def get_conversation(self, conversation_id: str) -> Conversation | None:
         return self._conversations.find_by_id(conversation_id)
 
+    def list_conversations(self, requester_id: str) -> list[Conversation]:
+        return self._conversations.find_by_participant(requester_id)
+
     def get_messages(
         self,
         requester_id: str,

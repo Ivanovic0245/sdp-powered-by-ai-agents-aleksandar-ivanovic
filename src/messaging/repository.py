@@ -12,6 +12,9 @@ class InMemoryConversationRepository:
     def find_by_id(self, conversation_id: str) -> Conversation | None:
         return self._store.get(conversation_id)
 
+    def find_by_participant(self, user_id: str) -> list[Conversation]:
+        return [c for c in self._store.values() if user_id in c.participant_ids]
+
 
 class InMemoryMessageRepository:
     def __init__(self):

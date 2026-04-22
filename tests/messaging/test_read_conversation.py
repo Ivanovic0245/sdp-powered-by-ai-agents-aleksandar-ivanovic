@@ -74,3 +74,17 @@ def test_msg_be_002_s2_given_non_participant_when_get_messages_then_forbidden(
     with pytest.raises(NotAParticipantError) as exc:
         messaging.get_messages(requester_id=charlie.id, conversation_id=conversation.id)
     assert "NOT_A_PARTICIPANT" in str(exc.value)
+
+
+def test_msg_be_002_s3_given_user_with_conversations_when_list_then_all_returned(
+    messaging, alice, bob, charlie
+):
+    # GIVEN: alice has conversations with bob and charlie; a third is bob<->charlie
+    conv_ab = messaging.start_conversation(alice.id, bob.id)
+    conv_ac = messaging.start_conversation(alice.id, charlie.id)
+    messaging.start_conversation(bob.id, charlie.id)
+    # WHEN: alice lists her conversations
+    conversations = messaging.list_conversations(alice.id)
+    # THEN: only conversations where alice participates are returned
+    returned_ids = {c.id for c in conversations}
+    assert returned_ids == {conv_ab.id, conv_ac.id}
