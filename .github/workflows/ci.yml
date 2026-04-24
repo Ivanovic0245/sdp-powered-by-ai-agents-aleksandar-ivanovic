@@ -38,4 +38,4 @@ jobs:
         run: docker build -t kata-tests .
 
       - name: Run tests inside Docker
-        run: docker run --rm kata-tests
+        run: docker run --rm kata-tests pytest tests/ -v

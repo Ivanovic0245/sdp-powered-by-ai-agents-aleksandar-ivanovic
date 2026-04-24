@@ -25,7 +25,7 @@ if ! docker build -t kata-tests-precommit . -q > "$BUILD_LOG" 2>&1; then
 fi
 rm -f "$BUILD_LOG"
 
-if ! docker run --rm kata-tests-precommit; then
+if ! docker run --rm kata-tests-precommit pytest tests/ -v; then
     echo "❌ Tests failed inside Docker. Fix tests before committing."
     exit 1
 fi

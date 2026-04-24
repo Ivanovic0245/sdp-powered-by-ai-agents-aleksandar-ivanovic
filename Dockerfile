@@ -10,5 +10,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY tests/ ./tests/
 
-# Run tests by default
-CMD ["pytest", "tests/", "-v"]
+# Demo by default; override with `docker run --rm <image> pytest tests/ -v` for tests
+CMD ["python", "-m", "src.demo"]

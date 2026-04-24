@@ -51,12 +51,17 @@ All commands assume Docker is available on the host.
 # Build the image
 docker build -t social-network-kata .
 
-# Run the test suite inside the container
+# Run the scripted end-to-end demo (default)
 docker run --rm social-network-kata
+
+# Run the test suite inside the container
+docker run --rm social-network-kata pytest tests/ -v
 ```
 
-The default container command is `pytest tests/ -v`, so a successful
-`docker run` is also the functional smoke test for the kata.
+The default container command is `python -m src.demo` — a scripted
+walkthrough of the three bounded contexts that prints each step with its
+originating Story/Scenario ID. The test suite is available by overriding
+the command, which is what CI runs on every push.
 
 ## Run tests locally (without Docker)
 
